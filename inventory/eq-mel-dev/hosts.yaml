@@ -1,0 +1,40 @@
+all:
+  hosts:
+    mel-dev-node1:
+      ansible_host: 10.0.12.50
+      ip: 10.0.12.50
+      access_ip: 10.0.12.50
+      ansible_user: <your_user_name>
+      ansible_ssh_private_key_file: '~/.ssh/<your_rsa_key>'
+    mel-dev-node2:
+      ansible_host: 10.0.12.51
+      ip: 10.0.12.51
+      access_ip: 10.0.12.51
+      ansible_user: <your_user_name>
+      ansible_ssh_private_key_file: '~/.ssh/<your_rsa_key>'
+    mel-dev-node3:
+      ansible_host: 10.0.12.52
+      ip: 10.0.12.52
+      access_ip: 10.0.12.52
+      ansible_user: <your_user_name>
+      ansible_ssh_private_key_file: '~/.ssh/<your_rsa_key>'
+  children:
+    kube_control_plane:
+      hosts:
+        mel-dev-node1:
+        mel-dev-node2:
+        mel-dev-node3:
+    kube_node:
+      hosts:
+        mel-dev-node1:
+        mel-dev-node2:
+        mel-dev-node3:
+    etcd:
+      hosts:
+        mel-dev-node1:
+        mel-dev-node2:
+        mel-dev-node3:
+    k8s_cluster:
+      children:
+        kube_control_plane:
+        kube_node:

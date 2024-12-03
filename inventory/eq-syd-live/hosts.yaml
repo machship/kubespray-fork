@@ -1,0 +1,40 @@
+all:
+  hosts:
+    live-node1:
+      ansible_host: 10.0.1.36
+      ip: 10.0.1.36
+      access_ip: 10.0.1.36
+      ansible_user: <your_user_name>
+      ansible_ssh_private_key_file: ~/.ssh/<your_rsa_key>
+    live-node2:
+      ansible_host: 10.0.1.37
+      ip: 10.0.1.37
+      access_ip: 10.0.1.37
+      ansible_user: <your_user_name>
+      ansible_ssh_private_key_file: ~/.ssh/<your_rsa_key>
+    live-node3:
+      ansible_host: 10.0.1.38
+      ip: 10.0.1.38
+      access_ip: 10.0.1.38
+      ansible_user: <your_user_name>
+      ansible_ssh_private_key_file: ~/.ssh/<your_rsa_key>
+  children:
+    kube_control_plane:
+      hosts:
+        live-node1:
+        live-node2:
+        live-node3:
+    kube_node:
+      hosts:
+        live-node1:
+        live-node2:
+        live-node3:
+    etcd:
+      hosts:
+        live-node1:
+        live-node2:
+        live-node3:
+    k8s_cluster:
+      children:
+        kube_control_plane:
+        kube_node:

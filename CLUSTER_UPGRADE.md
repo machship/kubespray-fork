@@ -104,5 +104,13 @@ ansible-playbook -i inventory/<cluster-name>/hosts.yaml --diff -b -K upgrade-clu
 ```
 You can also use the --limit flag to run the upgrade for a particular node, e.g.:
 ```bash
-ansible-playbook -i inventory/<cluster-name>/hosts.yaml --diff -b -K upgrade-cluster.yml --limit <node-1>,<node-2>
+ansible-playbook -i inventory/<cluster-name>/hosts.yaml --diff -b -K upgrade-cluster.yml --limit <node-1>,<node-2> --check
 ```
+
+#### 8. Once the check iis done, run the command to upgrade all the nodes in the cluster
+```bash
+ansible-playbook -i inventory/<cluster-name>/hosts.yaml --diff -b -K upgrade-cluster.yml
+```
+
+**Important**
+During the upgrade sftpgo-percona-instance1-xxxx pods might get stuck on the node that is being drained. If the stuck pod is a leader(which can be seen in the logs), check to see if there is another pod(on a different node) that has already become the leader. Ask the DB administrator(Sean) for help if needed to ensure that the stuck instance can be forcefully deleted. Delete the node and rerun the upgrade process using the limit flag with a list of nodes that have not yet been upgraded.

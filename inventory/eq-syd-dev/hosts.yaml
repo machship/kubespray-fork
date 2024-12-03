@@ -1,0 +1,40 @@
+all:
+  hosts:
+    dev-node1:
+      ansible_host: 10.0.1.50
+      ip: 10.0.1.50
+      access_ip: 10.0.1.50
+      ansible_user: <your_user_name>
+      ansible_ssh_private_key_file: ~/.ssh/<your_rsa_key>
+    dev-node2:
+      ansible_host: 10.0.1.51
+      ip: 10.0.1.51
+      access_ip: 10.0.1.51
+      ansible_user: <your_user_name>
+      ansible_ssh_private_key_file: ~/.ssh/<your_rsa_key>
+    dev-node3:
+      ansible_host: 10.0.1.52
+      ip: 10.0.1.52
+      access_ip: 10.0.1.52
+      ansible_user: <your_user_name>
+      ansible_ssh_private_key_file: ~/.ssh/<your_rsa_key>
+  children:
+    kube_control_plane:
+      hosts:
+        dev-node1:
+        dev-node2:
+        dev-node3:
+    kube_node:
+      hosts:
+        dev-node1:
+        dev-node2:
+        dev-node3:
+    etcd:
+      hosts:
+        dev-node1:
+        dev-node2:
+        dev-node3:
+    k8s_cluster:
+      children:
+        kube_control_plane:
+        kube_node:
